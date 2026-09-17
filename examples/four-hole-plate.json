@@ -1,0 +1,25 @@
+{
+  "name": "four_hole_plate",
+  "units": "mm",
+  "parameters": {
+    "length": 120,
+    "width": 80,
+    "thickness": 15,
+    "holeDiameter": 8,
+    "edgeOffset": 15,
+    "filletRadius": 3
+  },
+  "expected": {
+    "bodyCount": 1,
+    "boundingBox": [120, 80, 15],
+    "nativeFeatureNames": [
+      "01_BASE_SKETCH",
+      "02_BASE_EXTRUDE",
+      "03_MOUNTING_HOLE",
+      "04_HOLE_PATTERN",
+      "05_EDGE_FILLET"
+    ],
+    "editableExpressions": true,
+    "rebuildAfterParameterEdit": true
+  }
+}
