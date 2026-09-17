@@ -1,0 +1,13 @@
+# Copy this single entry into
+# awesome-dsh-plugin/awesome-dsh-plugin:
+# data/plugins/ethanrise__dsh-nx.yml
+#
+# Submit only after the repository is at least one day old. Keep this
+# experimental description until a real NX bridge has passed acceptance.
+url: https://github.com/ethanrise/dsh-nx
+name: ethanrise/dsh-nx
+category: tools
+tarball: https://github.com/ethanrise/dsh-nx/releases/latest/download/dsh-nx.tgz
+description:
+  en: 'Experimental DSH bundle providing typed MCP tools, workspace policy, diagnostics, and a mock transport for a future Siemens NX 2512 automation bridge.'
+  zh: '实验性 DSH 插件，为后续 Siemens NX 2512 自动化桥接提供类型化 MCP 工具、工作区安全策略、环境诊断和模拟传输。'
