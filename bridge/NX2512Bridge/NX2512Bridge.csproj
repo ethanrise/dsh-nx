@@ -11,5 +11,6 @@
       <HintPath>$(NXOpenDir)\NXOpen.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
 </Project>
