@@ -8,7 +8,7 @@
 
 ## 当前状态
 
-`0.1.0`已包含：当前DSH Bundle格式、MCP服务、NX建模Skill、工作区安全策略、Mock Bridge、doctor和自动测试。
+`0.1.0`已包含：当前DSH Bundle格式、MCP服务、NX建模Skill、工作区安全策略、Mock Bridge、doctor、stdio端到端测试、Windows安装/构建脚本和NX 2512验收清单。
 
 **目前尚未在真实Windows + NX 2512环境完成Bridge验收。**默认状态下所有写操作都会关闭失败；`DSH_NX_MODE=mock`只用于协议和Agent流程测试，返回结果始终带`mock: true`，不会生成`.prt`。
 
@@ -46,7 +46,7 @@ DSH_NX_MODE=mock npm run dev
 
 ## 第一版工具
 
-环境检查、能力查询、新建零件、Expression、矩形/圆草图、拉伸、简单孔、矩形阵列、受限圆角/倒角、特征树查询、实体测量、安全另存、STEP AP242导出和Undo。
+环境检查、能力查询、会话状态、操作预检、结果验证、新建零件、Expression、矩形/圆草图、拉伸、简单孔、矩形阵列、受限圆角/倒角、特征树查询、实体测量、安全另存、STEP AP242导出和Undo。
 
 装配、钣金、工程图、PMI、CAM、CAE、Teamcenter、复杂曲面、NX 1946及远程工作站不属于`0.1.0`。
 
