@@ -5,6 +5,8 @@
   "type": "module",
   "license": "MIT",
   "author": "Ethan Zhao",
+  "homepage": "https://github.com/ethanrise/dsh-nx#readme",
+  "bugs": { "url": "https://github.com/ethanrise/dsh-nx/issues" },
   "repository": { "type": "git", "url": "https://github.com/ethanrise/dsh-nx.git" },
   "keywords": ["dsh-plugin", "deepseek-harness", "siemens-nx", "nxopen", "mcp"],
   "engines": { "node": ">=22.19", "dsh": ">=0.1.5-alpha.1" },
@@ -13,6 +15,7 @@
   "files": ["lib", "skills", "bridge", "docs", "scripts", "examples", "cordis.patch.yml", "README.md", "README.zh-CN.md", "LICENSE", "SECURITY.md", "THIRD_PARTY_NOTICES.md"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
     "prepare": "npm run build",
     "check": "tsc -p tsconfig.json --noEmit && vitest run",
     "test": "vitest run",
