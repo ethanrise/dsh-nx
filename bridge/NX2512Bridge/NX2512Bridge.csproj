@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>DSHNXBridge</AssemblyName>
+    <RootNamespace>DSHNXBridge</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NXOpen">
+      <HintPath>$(NXOpenDir)\NXOpen.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
