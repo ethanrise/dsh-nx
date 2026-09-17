@@ -20,6 +20,12 @@
 dsh plugin --profile web add github:ethanrise/dsh-nx
 ```
 
+每个正式Tag还会自动发布固定文件名的预编译包，目标电脑无需编译TypeScript：
+
+```text
+https://github.com/ethanrise/dsh-nx/releases/latest/download/dsh-nx.tgz
+```
+
 将Skill复制到当前项目可发现目录：
 
 ```powershell
@@ -53,3 +59,7 @@ DSH_NX_MODE=mock npm run dev
 ## Ubuntu说明
 
 Ubuntu可以开发和测试MCP、Skill、Mock Bridge与安全策略，但不能验证NXOpen或原生`.prt`。真实支持声明必须在原生Windows + 合法NX 2512许可证环境完成验收。
+
+## 插件市场
+
+DSH Desktop通过`dsh-market`和`awesome-dsh-plugin`目录获得社区插件列表。发布检查、市场条目模板和提交步骤见[`docs/marketplace.md`](docs/marketplace.md)。真实NX验收通过前，市场描述必须明确本项目仍为实验性实现。
