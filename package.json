@@ -1,0 +1,32 @@
+{
+  "name": "dsh-nx",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness bundle for safe Siemens NX automation through MCP",
+  "type": "module",
+  "license": "MIT",
+  "author": "Ethan Zhao",
+  "repository": { "type": "git", "url": "https://github.com/ethanrise/dsh-nx.git" },
+  "keywords": ["dsh-plugin", "deepseek-harness", "siemens-nx", "nxopen", "mcp"],
+  "engines": { "node": ">=22.19", "dsh": ">=0.1.5-alpha.1" },
+  "dsh": { "manifestVersion": 1, "bundle": { "patch": "./cordis.patch.yml" } },
+  "bin": { "dsh-nx-mcp": "./lib/server.js", "dsh-nx-doctor": "./lib/doctor.js" },
+  "files": ["lib", "skills", "bridge", "docs", "cordis.patch.yml", "README.md", "README.zh-CN.md", "LICENSE", "SECURITY.md"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build",
+    "check": "tsc -p tsconfig.json --noEmit && vitest run",
+    "test": "vitest run",
+    "dev": "tsx src/server.ts",
+    "doctor": "tsx src/doctor.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.5",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.6",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
