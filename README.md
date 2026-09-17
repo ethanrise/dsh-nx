@@ -21,6 +21,13 @@ DeepSeek Harness removed the old `.dsh-plugin` repository format. This project u
 dsh plugin --profile web add github:ethanrise/dsh-nx
 ```
 
+Tagged releases also publish a prebuilt, version-independent asset named
+`dsh-nx.tgz`. It avoids building TypeScript on the target machine:
+
+```text
+https://github.com/ethanrise/dsh-nx/releases/latest/download/dsh-nx.tgz
+```
+
 Install the included skill for project-scoped discovery:
 
 ```powershell
@@ -58,6 +65,13 @@ The workflow also exposes session-state, preflight and post-mutation verificatio
 ## NX 2512 validation gate
 
 A real adapter is supported only after all checks pass on native Windows + licensed NX 2512: create a parameterized four-hole plate, inspect native feature history, change an expression and rebuild, verify body count/bounding box/volume, save-close-reopen, export STEP, and undo. Until evidence is recorded under `docs/nx2512-validation.md`, the default bridge fails closed.
+
+## Marketplace
+
+DSH Desktop obtains community listings through `dsh-market` and the
+`awesome-dsh-plugin` catalog. See [`docs/marketplace.md`](docs/marketplace.md)
+for the release checklist and conservative submission entry. This repository
+must not be advertised as real NX automation until the validation gate passes.
 
 ## License
 
