@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.Web.Script.Serialization;
 using NXOpen;
 
 namespace DSHNXBridge
@@ -13,6 +14,7 @@ namespace DSHNXBridge
     {
         private static HttpListener? listener;
         private static Thread? worker;
+        private static readonly JavaScriptSerializer Json = new JavaScriptSerializer();
 
         public static void Main(string[] args)
         {
@@ -48,29 +50,58 @@ namespace DSHNXBridge
         private static void Handle(HttpListenerContext context, string token)
         {
             context.Response.ContentType = "application/json";
+            context.Response.Headers["Cache-Control"] = "no-store";
+            if (context.Request.HttpMethod != "POST" || context.Request.Url?.AbsolutePath != "/rpc")
+            {
+                context.Response.StatusCode = 404;
+                Write(context, Error("NOT_FOUND", "Use POST /rpc"));
+                return;
+            }
             if (!string.Equals(context.Request.Headers["Authorization"], $"Bearer {token}", StringComparison.Ordinal))
             {
                 context.Response.StatusCode = 401;
-                Write(context, "{\"ok\":false,\"error\":{\"code\":\"UNAUTHORIZED\",\"message\":\"Invalid bridge token\"}}");
+                Write(context, Error("UNAUTHORIZED", "Invalid bridge token"));
+                return;
+            }
+
+            if (context.Request.ContentLength64 < 0 || context.Request.ContentLength64 > 1024 * 1024)
+            {
+                context.Response.StatusCode = 413;
+                Write(context, Error("REQUEST_TOO_LARGE", "Request body must be at most 1 MiB"));
                 return;
             }
 
             string body;
             using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding)) body = reader.ReadToEnd();
-            if (body.Contains("\"method\":\"health\""))
+            string method;
+            try
+            {
+                var request = Json.DeserializeObject(body) as System.Collections.Generic.Dictionary<string, object>;
+                method = request != null && request.TryGetValue("method", out var value) ? value as string ?? "" : "";
+            }
+            catch
+            {
+                context.Response.StatusCode = 400;
+                Write(context, Error("INVALID_JSON", "Request must be a JSON object"));
+                return;
+            }
+
+            if (method == "health")
             {
                 // Do not touch NXOpen from this background listener. Mutating and
                 // session-reading handlers require an accepted NX main-thread dispatcher.
-                Write(context, "{\"ok\":true,\"result\":{\"connected\":true,\"mode\":\"nx2512-transport-only-unverified\",\"verified\":false}}");
+                Write(context, Json.Serialize(new { ok = true, result = new { connected = true, mode = "nx2512-transport-only-unverified", verified = false } }));
                 return;
             }
-            if (body.Contains("\"method\":\"capabilities\""))
+            if (method == "capabilities")
             {
-                Write(context, "{\"ok\":true,\"result\":{\"adapter\":\"nx2512-readonly-unverified\",\"verified\":false,\"operations\":[]}}");
+                Write(context, Json.Serialize(new { ok = true, result = new { adapter = "nx2512-transport-only-unverified", verified = false, operations = new string[0] } }));
                 return;
             }
-            Write(context, "{\"ok\":false,\"error\":{\"code\":\"UNSUPPORTED_UNVERIFIED\",\"message\":\"Mutating NX 2512 handlers are disabled until real-runtime acceptance\"}}");
+            Write(context, Error("UNSUPPORTED_UNVERIFIED", "NXOpen handlers are disabled until real-runtime acceptance"));
         }
+
+        private static string Error(string code, string message) => Json.Serialize(new { ok = false, error = new { code, message } });
 
         private static void Write(HttpListenerContext context, string json)
         {
