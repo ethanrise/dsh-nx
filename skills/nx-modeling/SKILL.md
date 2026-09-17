@@ -14,11 +14,12 @@ Use only the typed `mcp__nx__nx_*` tools. Never claim that NX created, saved, me
 3. Convert the request into an explicit plan containing millimeter dimensions, principal plane, feature order, expected body count, output path, and assumptions.
 4. Ask one focused question only when a missing dimension is fit-critical or makes the model ambiguous. Otherwise state conservative assumptions.
 5. Create named expressions before geometry. Use ordered feature names such as `01_BASE_SKETCH`, `02_BASE_EXTRUDE`, and `03_MOUNTING_HOLE`.
-6. Use native sketches and features. Do not substitute mesh, STEP import, arbitrary journals, shell commands, or free-form NXOpen code.
-7. After each mutation, retain its transaction id. On an error or timeout, inspect the feature tree before retrying; an uncertain mutation must never be replayed automatically.
-8. Before saving, call `nx_list_features` and `nx_measure_body`. Check expected feature/body changes and dimensions.
-9. Save only to a new `.prt` path below `DSH_NX_WORKSPACE`. Export STEP only when requested.
-10. Report assumptions, observed features, measurements, output paths, adapter/version, and whether the result was verified in real NX.
+6. Immediately before each write, call `nx_preflight` for that exact operation. Stop if `allowed` is false; never reuse a preflight after NX state or parameters change.
+7. Use native sketches and features. Do not substitute mesh, STEP import, arbitrary journals, shell commands, or free-form NXOpen code.
+8. After each mutation, retain its transaction id and call `nx_verify_result` with the preflight id and expected counts. On an error or timeout, inspect session state and the feature tree before retrying; an uncertain mutation must never be replayed automatically.
+9. Before saving, call `nx_list_features` and `nx_measure_body`. Check expected feature/body changes and dimensions.
+10. Save only to a new `.prt` path below `DSH_NX_WORKSPACE`. Export STEP only when requested.
+11. Report assumptions, observed features, measurements, output paths, adapter/version, and whether the result was verified in real NX.
 
 ## Safety
 
