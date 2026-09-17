@@ -12,6 +12,20 @@ const invoke = async (method: string, params: Record<string, unknown> = {}) => o
 
 server.registerTool('nx_health', { description: 'Check the configured Siemens NX bridge without modifying NX.' }, async () => invoke('health'))
 server.registerTool('nx_get_capabilities', { description: 'List the NX adapter and its explicitly supported operations.' }, async () => invoke('capabilities'))
+server.registerTool('nx_get_session_state', { description: 'Read current work-part, feature-count and modified state without changing NX.' }, async () => invoke('session_state'))
+
+server.registerTool('nx_preflight', {
+  description: 'Validate one exact planned operation against current NX state immediately before mutation.',
+  inputSchema: {
+    operation: z.enum(['create_expression', 'create_rectangle_sketch', 'create_circle_sketch', 'extrude', 'create_simple_hole', 'rectangular_pattern', 'fillet', 'chamfer']),
+    expectedFeatureDelta: z.number().int().min(0).max(100).default(1),
+  },
+}, async args => invoke('preflight', args))
+
+server.registerTool('nx_verify_result', {
+  description: 'Verify observed feature/body state after a mutation; mock mode never claims exact geometry.',
+  inputSchema: { preflightId: z.string().uuid(), expectedFeatureCount: z.number().int().min(0), expectedBodyCount: z.number().int().min(0).max(100) },
+}, async args => invoke('verify', args))
 
 server.registerTool('nx_create_part', {
   description: 'Create a new millimeter NX part below DSH_NX_WORKSPACE. Does not overwrite an existing file.',
