@@ -35,15 +35,27 @@ export class HttpBridge implements NxBridge {
   }
 }
 
-interface MockState { part?: string; features: Array<{ id: string; type: string; name: string }>; undo: string[] }
+interface MockState {
+  part?: string
+  features: Array<{ id: string; type: string; name: string }>
+  expressions: Record<string, number>
+  undo: string[]
+}
 
 export class MockBridge implements NxBridge {
-  private readonly state: MockState = { features: [], undo: [] }
+  private readonly state: MockState = { features: [], expressions: {}, undo: [] }
 
   async call(method: string, params: JsonObject = {}): Promise<JsonObject> {
     if (method === 'health') return { connected: true, mode: 'mock', nxVersion: '2512-MOCK', warning: 'No real NX operation occurred' }
     if (method === 'capabilities') return { adapter: 'mock-2512', verified: false, operations: SUPPORTED_METHODS }
+    if (method === 'session_state') return { part: this.state.part, featureCount: this.state.features.length, expressions: this.state.expressions, modified: this.state.features.length > 0, mock: true }
+    if (method === 'preflight') {
+      const operation = String(params.operation ?? '')
+      return { allowed: Boolean(this.state.part) && SUPPORTED_METHODS.includes(operation), operation, baselineFeatureCount: this.state.features.length, preflightId: randomUUID(), mock: true }
+    }
+    if (method === 'verify') return { passed: true, featureCount: this.state.features.length, features: this.state.features, exactGeometry: false, mock: true }
     if (method === 'create_part') { this.state.part = String(params.path); return { part: this.state.part, units: 'mm', mock: true } }
+    if (method === 'create_expression') { this.state.expressions[String(params.name)] = Number(params.value); return { name: params.name, value: params.value, unit: params.unit, mock: true, transactionId: randomUUID() } }
     if (method === 'list_features') return { features: this.state.features, mock: true }
     if (method === 'measure_body') return { bodyCount: this.state.features.length ? 1 : 0, mock: true, exact: false }
     if (method === 'save_part_as' || method === 'export_step') return { path: String(params.path), mock: true, written: false }
@@ -57,6 +69,7 @@ export class MockBridge implements NxBridge {
 }
 
 export const SUPPORTED_METHODS = [
+  'session_state', 'preflight', 'verify',
   'create_part', 'create_expression', 'create_rectangle_sketch', 'create_circle_sketch',
   'extrude', 'create_simple_hole', 'rectangular_pattern', 'fillet', 'chamfer',
   'list_features', 'measure_body', 'save_part_as', 'export_step', 'undo',
