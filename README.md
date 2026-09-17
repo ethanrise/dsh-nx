@@ -8,7 +8,7 @@ English | [简体中文](README.zh-CN.md)
 
 ## Current status
 
-- The MCP server, schemas, workspace confinement, mock bridge and tests run on Linux and Windows.
+- The MCP server, schemas, workspace confinement, mock bridge and stdio end-to-end tests run on Linux and Windows.
 - The repository does **not yet contain a real-NX-accepted NX 2512 bridge**.
 - Mock results always contain `mock: true` and never write `.prt` or STEP files.
 - Do not use this release on production parts.
@@ -52,6 +52,8 @@ No arbitrary journal, Python, C#, or shell execution tool is exposed.
 ## Tool surface
 
 Health/capabilities, new part, named expression, rectangle/circle sketch, extrusion, simple hole, rectangular pattern, bounded fillet/chamfer, feature listing, body measurement, safe save-as, STEP AP242 export, and undo.
+
+The workflow also exposes session-state, preflight and post-mutation verification tools. See [`docs/architecture.md`](docs/architecture.md), the sample [`four-hole-plate.json`](examples/four-hole-plate.json), and the Windows scripts under [`scripts/`](scripts/).
 
 ## NX 2512 validation gate
 
