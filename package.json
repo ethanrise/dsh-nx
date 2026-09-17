@@ -10,7 +10,7 @@
   "engines": { "node": ">=22.19", "dsh": ">=0.1.5-alpha.1" },
   "dsh": { "manifestVersion": 1, "bundle": { "patch": "./cordis.patch.yml" } },
   "bin": { "dsh-nx-mcp": "./lib/server.js", "dsh-nx-doctor": "./lib/doctor.js" },
-  "files": ["lib", "skills", "bridge", "docs", "cordis.patch.yml", "README.md", "README.zh-CN.md", "LICENSE", "SECURITY.md"],
+  "files": ["lib", "skills", "bridge", "docs", "scripts", "examples", "cordis.patch.yml", "README.md", "README.zh-CN.md", "LICENSE", "SECURITY.md", "THIRD_PARTY_NOTICES.md"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "prepare": "npm run build",
